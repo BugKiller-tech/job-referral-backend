@@ -1,0 +1,10 @@
+{
+  "name": "flight-system",
+  "script": "npm",
+  "args": "start",
+  "watch" : true,
+  "ignore_watch" : ["node_modules", "public"],
+  "watch_options": {
+    "followSymlinks": false
+  }
+}

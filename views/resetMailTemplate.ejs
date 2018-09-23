@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Document</title>
+
+  <style lang="css">
+      .token {
+        border: 3px solid gray;
+        padding: 20px;
+        box-shadow: inset 0 0 10px #ccc;
+        
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <div class="text-center">
+        <h1>JETCAB System</h1>
+      </div>
+      <h3>
+        <b>Please click the button to reset the password</b> <br><br>
+        <button onclick='window.open("<%= token %>")' class="btn btn-success">Reset the Password</button> <br><br>
+        <div>
+          If button is not working, then please copy and paste the following link into web browser.
+        </div>
+        <br><br>
+
+        <div class="token">
+          <%= token %>
+        </div>
+      </h3>
+      <h5 class="text-secondary">You received this mail because you required reest password!</h5>
+    </div>
+
+</body>
+</html>
