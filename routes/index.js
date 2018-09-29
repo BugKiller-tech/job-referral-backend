@@ -3,18 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 
 var users = require('./users')
-var flights = require('./flights')
-var planes = require('./planes')
-var cities = require('./cities')
-var configs = require('./configs')
-var faqs = require('./faqs')
-var hangars = require('./hangars')
-var reviews = require('./reviews')
-var books = require('./books')
-var others = require('./others');
 var reset_passwords = require('./reset_password')
-var notifications = require('./notifications');
-var alerts = require('./alerts');
 
 /* GET home page. */
 // router.get('/', function(req, res, next) {
@@ -22,23 +11,10 @@ var alerts = require('./alerts');
 // });
 
 
-
-
 router.use('/api/users', users)
-router.use('/api/flight', flights)
-router.use('/api/plane', planes)
-router.use('/api/city', cities)
-router.use('/api/config', configs);
-router.use('/api/faq', faqs);
-router.use('/api/hangar', hangars)
-
-router.use('/api/book', books);
-
 router.use('/api', reset_passwords);
-router.use('/api/review', reviews);
-router.use('/api/other', others);
-router.use('/api/notification', notifications);
-router.use('/api/alerts', alerts);
+
+
 
 
 

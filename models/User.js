@@ -17,7 +17,7 @@ const schema = new Schema(
     },
     confirmed: {
       type: Boolean,
-      default: true
+      default: false
     },
     confirmationToken: {
       type: String,
@@ -31,46 +31,10 @@ const schema = new Schema(
       type: String,
       required: true
     },
-    userName: {
-      type: String,
-      required: true
-    },
-    phoneNumber: {
-      type: String,
-      required: true
-    },
-    profileImageUrl: {
-      type: String,
-      required: false
-    },
-    favoriteCities: {
-      type: [{
-        type: Schema.Types.ObjectId,
-        ref: 'City'
-      }],
-      requried: false
-    },
-    role: {  //0 - user 1-airline owner, 2-admin
+    userType: {  //0 - job seeker, 1: employee, 2: admin
       type: Number,
       default: 0
     },
-
-    idImage: {
-      type: String,
-      default: '',
-    },
-    originCity: {
-      type: Schema.Types.ObjectId,
-    },
-    fireToken: {
-      type: String,
-      required: false
-    },
-    isTermsAgree: {
-      type: Schema.Types.Boolean,
-      default: true,
-      required: false,
-    }
   }, 
   {
     timestamps: true

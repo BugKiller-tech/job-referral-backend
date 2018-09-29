@@ -5,11 +5,11 @@ const from = '"Flight System" <info@flight_sys.com>';
 
 var transporter = nodemailer.createTransport({
     // service: 'smtp.elasticemail.com',
-    host: 'smtp.elasticemail.com',
-    port: 2525,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     auth: {
-           user: 'jetcabad@gmail.com',
-           pass: '1ffc9f66-6969-443f-b075-809d18e6ea6a'
+           user: process.env.EMAIL_USER,
+           pass: process.env.EMAIL_PORT
        }
    });
 

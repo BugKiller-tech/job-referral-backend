@@ -43,41 +43,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: process.env.SECRET, resave: true, saveUninitialized: true}))
 app.use(cors())
 
-
-// var mailer = require('express-mailer');
-// mailer.extend(app, {
-//     from: 'jetcabad@gmail.com',
-//     host: 'smtp.gmail.com', // hostname
-//     secureConnection: true, // use SSL
-//     port: 465, // port for secure SMTP
-//     transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
-//     auth: {
-//         user: 'jetcabad@gmail.com',
-//         pass: 'AircraftOperator01'
-//     }
-// });
-
-
-
-
 var index = require('./routes/index');
 app.use('/', index);
 
 
-
-//Joi error send middleware
-app.use((err, req, res, next) => {
-  if (err.error.isJoi) {
-    // we had a joi error, let's return a custom 400 json response
-    res.status(400).json({
-      type: err.type, // will be "query" here, but could be "headers", "body", or "params"
-      message: err.error.toString(),
-    });
-  } else {
-    // pass on to another error handler
-    next(err);
-  }
-});
 
 
 
@@ -89,6 +58,18 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
+// celebrate error handler
+app.use((err, req, res, next) => {
+  if (isCelebrate(err)) {
+    return res.status(400).json({
+      errors: res.__(err.message),
+    })
+  }
+  next(err);
+})
+
 
 // error handler
 app.use(function(err, req, res, next) {
