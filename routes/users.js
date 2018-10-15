@@ -9,9 +9,9 @@ var checkAdmin = require('../policies/checkAdmin')
 const signupSchema = celebrate({
   body: {
     firstName: Joi.string().required().error(new Error('first name is required')),
-    lastName: Joi.string().required().error(new Error('first name is required')),
-    email: Joi.string().required().error(new Error('first name is required')),
-    password: Joi.string().required().error(new Error('first name is required')),
+    lastName: Joi.string().required().error(new Error('last name name is required')),
+    email: Joi.string().required().error(new Error('the email is required')),
+    password: Joi.string().required().error(new Error('password is required')),
     userType: Joi.number(),
   }
 })
@@ -29,6 +29,7 @@ router.get('/checkLogin', userController.checkLogin);
 
 //admin route
 router.get('/all', userController.getAllUsers);
+router.get('/deleteUser/:userId', userController.deleteUser)
 
 
 module.exports = router;

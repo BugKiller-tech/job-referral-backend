@@ -1,5 +1,5 @@
 {
-  "name": "flight-system-server",
+  "name": "job-referral-server",
   "version": "0.0.0",
   "private": true,
   "scripts": {

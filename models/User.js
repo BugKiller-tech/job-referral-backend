@@ -35,6 +35,11 @@ const schema = new Schema(
       type: Number,
       default: 0
     },
+
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
   }, 
   {
     timestamps: true
@@ -52,28 +57,7 @@ schema.methods.setPassword = function(password){
 
 schema.methods.setConfirmationToken = function setConfirmationToken(){
   this.confirmationToken = this.generateJWT();
-}
-
-schema.methods.generateJWT = function generateJWT(){
-  return jwt.sign(
-      {
-          email: this.email,
-          confirmed: this.confirmed
-      },
-      process.env.JWT_SECRET
-  );
-};
-
-schema.methods.toAuthJSON = function toAuthJSON() {
-  return {
-      email: this.email,
-      confirmed: this.confirmed,
-      token: this.generateJWT()
-  }
-}
-
-schema.methods.setConfirmationToken = function setConfirmationToken(){
-  this.confirmationToken = this.generateJWT();
+  return this.confirmationToken;
 }
 
 schema.methods.generateJWT = function generateJWT(){
@@ -95,7 +79,7 @@ schema.methods.toAuthJSON = function toAuthJSON() {
 }
 
 schema.methods.generateConfirmationUrl= function(){
-  return `${process.env.HOST}/confirmation/${this.confirmationToken}`
+  return `${process.env.HOST}/confirmation/${this.setConfirmationToken()}`
 }
 
 schema.methods.generateResetPasswordLink = function generateResetPasswordLink() {

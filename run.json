@@ -1,5 +1,5 @@
 {
-  "name": "flight-system",
+  "name": "job-referral-server",
   "script": "npm",
   "args": "start"
 }

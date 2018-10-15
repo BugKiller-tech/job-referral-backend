@@ -4,24 +4,45 @@ var jwt = require('jsonwebtoken');
 
 var users = require('./users')
 var reset_passwords = require('./reset_password')
+var tests = require('./tests')
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+
+
 
 
 router.use('/api/users', users)
+router.use('/api/test', tests);
+
+
 router.use('/api', reset_passwords);
 
 
+router.get('/confirmation/:token', async (req, res) => {
+  try {
+    const token = req.params.token;
+    const user = await user.findOne({ confirmationToken: token });
+    if (!user) {
+      return res.render('resetPassword', {
+        invalidToken: true,
+        token: '',
+        user: {_id: '', email: ''}
+      });
+    }
+    user.confirmationToken = '';
+    user.confirmed = true
+    await user.save();
 
-
-
-
-
-
-
+    return res.json({
+      message: 'your email is verified! you can use the website!'
+    })
+  } catch (err) {
+    return res.render('resetPassword', {
+      invalidToken: true,
+      token: '',
+      user: {_id: '', email: ''}
+    });
+  }
+})
 
 router.get('/reset_password_request', (req, res) => {
   res.render('resetPasswordRequest')

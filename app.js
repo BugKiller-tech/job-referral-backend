@@ -9,7 +9,7 @@ var dotenv = require('dotenv')
 var cors = require('cors')
 var mongoose = require('mongoose')
 var Promise = require('bluebird')
-
+var { isCelebrate } = require('celebrate');
 
 dotenv.config()
 
@@ -64,7 +64,8 @@ app.use(function(req, res, next) {
 app.use((err, req, res, next) => {
   if (isCelebrate(err)) {
     return res.status(400).json({
-      errors: res.__(err.message),
+      // errors: res.__(err.message),
+      errors: err.message
     })
   }
   next(err);
