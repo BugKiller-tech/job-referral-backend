@@ -36,6 +36,11 @@ const schema = new Schema(
       default: 0
     },
 
+    resume: {
+      type: String,
+      default: ''
+    },
+
     isAdmin: {
       type: Boolean,
       default: false

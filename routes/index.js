@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
+const User = require('../models/User');
+
+
 var users = require('./users')
 var reset_passwords = require('./reset_password')
 var tests = require('./tests')
@@ -20,7 +23,9 @@ router.use('/api', reset_passwords);
 router.get('/confirmation/:token', async (req, res) => {
   try {
     const token = req.params.token;
-    const user = await user.findOne({ confirmationToken: token });
+    console.log('the token is', token);
+    const user = await User.findOne({ confirmationToken: token });
+    console.log('user found', user);
     if (!user) {
       return res.render('resetPassword', {
         invalidToken: true,
@@ -36,6 +41,7 @@ router.get('/confirmation/:token', async (req, res) => {
       message: 'your email is verified! you can use the website!'
     })
   } catch (err) {
+    console.log(err);
     return res.render('resetPassword', {
       invalidToken: true,
       token: '',

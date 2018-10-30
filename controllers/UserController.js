@@ -1,11 +1,29 @@
 const validator = require('validator');
 const sharp = require('sharp');
 const path = require('path')
+const multer = require('multer');
+
 
 const User = require('../models/User')
 const parseErrors = require('../utils//parseErrors')
 const CommonResponse = require('../utils/commonResponse');
 const mailer = require('../utils/mailer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/resumes')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+const uploadResumeMulter = multer({
+                      storage,
+                      limits: {
+                        fileSize: 10 * 1024 * 1024 // this means 10 mb
+                      }
+                    }).single('file')
 
 module.exports = {
   signup: async (req, res) => {
@@ -72,6 +90,83 @@ module.exports = {
       return res.status(401).json({
         errors: 'you did not log in'
       })
+    }
+  },
+
+  changePassword: async (req, res) => {
+    const { newPwd } = req.body;
+    const user = User.findOne({ _id: req.session.user._id })
+    if (!user) {
+      return res.status(400).json({
+        errors: 'can not find the user'
+      })
+    }
+    user.setPassword(newPwd);
+    await user.save();
+    return res.json({
+      message: 'Successfully updated the password'
+    })
+  },
+
+  account_info: async (req, res) => {
+    try {
+      const user = await User.findOne({ _id: req.session.user._id });
+      return res.json({
+        message: 'this is your account info',
+        user
+      })
+    } catch(err) {
+      CommonResponse.sendSomethingWentWrong(req, res, err);
+    }
+  },
+
+  uploadResume: async (req, res) => {
+    try {
+      let fileUrl = '';
+
+      const error = await new Promise((resolve, reject) => {
+        uploadResumeMulter(req, res, (uploadError) => {
+          if (uploadError) {
+            reject(uploadError)
+          } else {
+            if (req.file) {
+              fileUrl = process.env.HOST + '/uploads/resumes/' + req.file.filename;
+            }
+            resolve(null);
+          }
+        });
+      });
+
+      
+      if (fileUrl == '') {
+        return res.status(400).json({
+          errors: 'Please upload the resume file'
+        })
+      }
+
+      if (error) {
+        return res.status(400).json({
+          errors: 'Can not upload the resume'
+        })
+      }
+    
+      const user = await User.findOne({ _id: req.session.user._id});
+
+      if (!user) {
+        return res.status(400).json({
+          errors: 'Can not find the user in database'
+        })
+      }
+      user.resume = fileUrl;
+      await user.save();
+
+      return res.json({
+        message: 'Successfully uploaded the resume',
+        user: user
+      })
+    } catch(err) {
+      console.log('upload resume', err);
+      CommonResponse.sendSomethingWentWrong(req,res, err);
     }
   },
 

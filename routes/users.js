@@ -22,10 +22,22 @@ const signinSchema = celebrate({
   }
 })
 
+const changePwdSchema = celebrate({
+  body: {
+    newPwd: Joi.string().required().error(new Error('Please provide new password')),
+  }
+})
+
 
 router.post('/signup',  signupSchema, userController.signup);
 router.post('/signin', signinSchema, userController.signin);
 router.get('/checkLogin', userController.checkLogin);
+
+router.use(authenticate);
+
+router.post('/changePassword', changePwdSchema, userController.changePassword);
+router.post('/uploadResume',  userController.uploadResume);
+router.get('/account_info', userController.account_info);
 
 //admin route
 router.get('/all', userController.getAllUsers);
