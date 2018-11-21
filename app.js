@@ -40,7 +40,12 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: process.env.SECRET, resave: true, saveUninitialized: true}))
+app.use(session({
+  secret: process.env.SECRET, 
+  resave: true, saveUninitialized: true,
+  // proxy: true,
+  // cookie: { secure: true }
+}))
 app.use(cors())
 
 var index = require('./routes/index');

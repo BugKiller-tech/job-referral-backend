@@ -95,17 +95,22 @@ module.exports = {
 
   changePassword: async (req, res) => {
     const { newPwd } = req.body;
-    const user = User.findOne({ _id: req.session.user._id })
-    if (!user) {
-      return res.status(400).json({
-        errors: 'can not find the user'
+    try {
+      const user = await User.findOne({ _id: req.session.user._id })
+      console.log('logged in user is ', user);
+      if (!user) {
+        return res.status(400).json({
+          errors: 'can not find the user'
+        })
+      }
+      user.setPassword(newPwd);
+      await user.save();
+      return res.json({
+        message: 'Successfully updated the password'
       })
+    } catch (err) {
+      CommonResponse.sendSomethingWentWrong(req, res, err);
     }
-    user.setPassword(newPwd);
-    await user.save();
-    return res.json({
-      message: 'Successfully updated the password'
-    })
   },
 
   account_info: async (req, res) => {

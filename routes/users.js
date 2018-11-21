@@ -17,8 +17,8 @@ const signupSchema = celebrate({
 })
 const signinSchema = celebrate({
   body: {
-    email: Joi.string().required().error(new Error('first name is required')),
-    password: Joi.string().required().error(new Error('first name is required')),
+    email: Joi.string().required().error(new Error('Please provide the email to signin')),
+    password: Joi.string().required().error(new Error('Please provide the password to sign in')),
   }
 })
 

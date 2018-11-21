@@ -6,6 +6,10 @@ const User = require('../models/User');
 
 
 var users = require('./users')
+const companies = require('./companies.js')
+const jobs = require('./jobs');
+
+
 var reset_passwords = require('./reset_password')
 var tests = require('./tests')
 
@@ -13,7 +17,10 @@ var tests = require('./tests')
 
 
 
-router.use('/api/users', users)
+router.use('/api/users', users);
+router.use('/api/companies', companies);
+router.use('/api/jobs', jobs);
+
 router.use('/api/test', tests);
 
 

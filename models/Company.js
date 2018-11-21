@@ -5,6 +5,7 @@ const schema = new Schema(
   {
     name: String,
     type: String,
+    description: String,
     imageUrl: String,
     size: Number,
     verified: {
